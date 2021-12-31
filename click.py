@@ -1,25 +1,49 @@
 import pyautogui
-import datetime as dt
 import time
+import datetime as dt
+try :
+    file = open("location.txt", "rt")
+    x, y = file.readline().split()
+    x = int(x)
+    y = int(y)
+    file.close()
+except :
+    print("'location.txt' 파일이 존재하지 않거나, 좌표값이 제대로 입력돼있지 않습니다.\nlocation 프로그램을 먼저 실행해 주십시오.")
+    exit()
 
-print("[로그인 버튼 클릭]\n")
-print("이 프로그램은 사용자에게 서버 시간과 시스템 시간 간 시차 측정을 요구합니다.")
-print("파일을 여러 번 실행하며 시스템 시간과 서버 시간을 미리 측정해 주시기 바랍니다.\n")
-print("반드시 해상도 1920 * 1080 설정 및 인터넷 창을 전체 화면으로 설정해 주시기 바랍니다.")
-print("또는 다시 로그인 버튼을 화면의 (x, y) = (1200, 330) 좌표에 위치시키면 됩니다.\n")
+while True :
+    try :
+        sec = input("돌아오는 'OO.OO'초에 클릭합니다.\n입력하십시오(ex : 59.91) : ")
+        s, ms = sec.split('.')
+        if (s[:1] == '-') :
+            print("음수를 입력할 수 없습니다. 다시 입력해 주십시오.")
+            continue
+        s = int(s)
+        ms2 = int(ms)
+        if (s >= 60) :
+            print("초는 60 이하여야 합니다. 다시 입력해 주십시오.")
+            continue
+        if (len(ms) != 2) :
+            print("초는 무조건 소수점 아래 두 자리로 입력해야 합니다. 다시 입력해 주십시오.")
+            continue
+        if (s < 0 or ms2 < 0) :
+            print("음수를 입력할 수 없습니다. 다시 입력해 주십시오.")
+            continue
+        break
+    except :
+        print("숫자를 잘못 입력하셨습니다. 다시 입력해 주십시오.")
+hour = dt.datetime.now().hour
+minute = (dt.datetime.now().minute + 1) % 60
+if (minute == 0) :
+    hour = (hour + 1) % 24
 
-sec = input("매분 x.x초에 클릭합니다. x.x를 입력하십시오. (ex : 1.2) : ")
-
-s, ms = sec.split('.')
-s = int(s)
-ms = int(ms) * 100000
-
-endbool = False
-while not endbool :
+print("%s시 %s분 %d.%s초에 (%d, %d)를 클릭합니다."%(hour, minute, s, ms, x, y))
+ms2 *= 10000
+while True :
     t = dt.datetime.now()
-    if t.second == s and t.microsecond > ms :
-        pyautogui.click(1200, 330) #로그인 버튼
-        #pyautogui.click(726, 467) #다시 로그인 버튼 (서버 시간 확인)
-        endbool = True
+    if t.second == s and t.microsecond > ms2 :
+        pyautogui.click(x, y) #로그인 버튼
+        break
     else :
-        time.sleep(0.01)
+        time.sleep(0.0001)
+        continue
