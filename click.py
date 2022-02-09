@@ -33,7 +33,9 @@ while True :
     except :
         print("숫자를 잘못 입력하셨습니다. 다시 입력해 주십시오.")
 hour = dt.datetime.now().hour
-minute = (dt.datetime.now().minute + 1) % 60
+minute = dt.datetime.now().minute
+if dt.datetime.now().second > s :
+    minute = (minute + 1) % 60
 if (minute == 0) :
     hour = (hour + 1) % 24
 
