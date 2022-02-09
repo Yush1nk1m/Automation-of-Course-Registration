@@ -36,10 +36,11 @@ hour = dt.datetime.now().hour
 minute = dt.datetime.now().minute
 if dt.datetime.now().second > s :
     minute = (minute + 1) % 60
-if (minute == 0) :
-    hour = (hour + 1) % 24
+    if (minute == 0) :
+        hour = (hour + 1) % 24
 
 print("%s시 %s분 %d.%s초에 (%d, %d)를 클릭합니다."%(hour, minute, s, ms, x, y))
+print("클릭 후 수강신청 페이지의 \"현시점 서버시간\"을 확인하십시오.")
 ms2 *= 10000
 while True :
     t = dt.datetime.now()
